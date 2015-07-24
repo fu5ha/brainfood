@@ -1,0 +1,20 @@
+contact-list
+    section
+        h1 Contact List
+        .contact-head
+            .col
+                h3 Username
+            .col
+                h3 Email
+            .col
+                h3 Delete?
+        article( each="{ opts.users }" )
+            .col
+                a(href="#" class="linkshowuser" rel="-{ this.username }") { this.username }
+            .col
+                { this.email }
+            .col
+                a(href="#" class="linkshowuser" rel="{ this._id }") delete
+
+    script.
+        
