@@ -11,6 +11,7 @@ var db = monk('mongodb://heroku_cvtlvgnw:2p1pnog60hqbqad4eeqc67jo89@ds063892.mon
 
 var routes = require('./routes/index');
 var api = require('./routes/api');
+var list = require('./routes/list');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use('/api', function(req, res, next) {
   next();
 });
 
+app.use('/list', list)
 app.use('/api', api);
 app.use('/', routes);
 

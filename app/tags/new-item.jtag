@@ -37,6 +37,11 @@ new-item
             opts.createNewItem(newItem, function(success) {
                 if(success) {
                     window.location.hash = "#close";
+                    this.number.value = '';
+                    this.name.value = '';
+                    this.units.value = '';
+                    this.price.value = '';
+                    this.stock.value = '';
                 } else {
                     alert('Something went wrong. Please try again!')
                 }

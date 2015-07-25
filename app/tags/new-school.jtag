@@ -26,6 +26,8 @@ new-school
             opts.createNewSchool(newSchool, function(success) {
                 if(success) {
                     window.location.hash = "#close";
+                    this.name.value = '';
+                    this.bags.value = '';
                 } else {
                     alert('Something went wrong. Please try again!')
                 }

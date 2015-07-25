@@ -19,6 +19,10 @@ $(document).ready(function() {
             $('#top-button').attr("href", "#submitall");
             $('#top-button button').text("Submit All");
             $('.main-bottom-bar button.inventory').hide();
+            var update = function() {
+                globals.order.update();
+            }
+            globals.order.trigger('renewData', update);
         } else if (collection === 'inventory') {
             $('order').hide();
             $('inventory').show();
@@ -27,6 +31,10 @@ $(document).ready(function() {
             $('#top-button').attr("href", "#bagView");
             $('#top-button button').text("View Bag");
             $('.main-bottom-bar button.inventory').show();
+            var update = function () {
+                globals.inventory.trigger('stock-changed');
+            }
+            globals.inventory.trigger('renewData', update);
         } else if (collection === 'submitall'){
             submitAllSchools();
         }
@@ -186,7 +194,7 @@ function removeItemFromBag(itemID) {
     globals.bagview.trigger('remove-item', itemID);
 }
 
-function saveBagToDatabase(bag) {
+function saveBagToDatabase(bag, callback) {
     var unique = true;
     for (var i=0;i<globals.bags.length;i++) {
         if (globals.bags[i].name === bag.name) {
@@ -200,7 +208,12 @@ function saveBagToDatabase(bag) {
             type: 'POST',
             data: JSON.stringify(bag),
             contentType: 'application/json',
-            success: function(result) {}
+            success: function(result) {
+                callback(true);
+            },
+            error: function() {
+                callback(false);
+            }
         });
         $.getJSON('/api/bags', function(data) {
             globals.bags = data;
@@ -212,7 +225,10 @@ function saveBagToDatabase(bag) {
             data: JSON.stringify(bag),
             contentType: 'application/json',
             success: function(result) {
-
+                callback(true);
+            },
+            error: function() {
+                callback(false);
             }
         });
     }

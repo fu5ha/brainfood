@@ -62,7 +62,14 @@ bagview
 
         this.save = function () {
             this.bag.name = this.bagname.value;
-            opts.saveBagToDatabase(this.bag);
+            var callback = function(success) {
+                if (success) {
+                    window.location.hash = "#close";
+                } else {
+                    alert("Something went wrong, please try again!")
+                }
+            }
+            opts.saveBagToDatabase(this.bag, callback);
         }
 
         this.on('quantity-changed', function(obj) {
