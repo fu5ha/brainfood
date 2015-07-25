@@ -23,7 +23,8 @@ html
                 a#new-button(href="#new-item")
                     button(type="button") Add Food Item
                 button.inventory(type="button" onclick="deleteSelected()") Delete Selected Items
-                button.inventory(type="button" onclick="generateShoppingList()") Generate Shopping List
+                a(href="/list")
+                    button.inventory(type="button") Generate Shopping List
 
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
         script(src="js/riot.min.js")
