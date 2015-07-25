@@ -25,7 +25,7 @@ $(document).ready(function() {
             $('#new-button').attr("href", "#new-item");
             $('#new-button button').text("Add Food Item");
             $('#top-button').attr("href", "#bagView");
-            $('#top-buton button').text("View Bag");
+            $('#top-button button').text("View Bag");
             $('.main-bottom-bar button.inventory').show();
         } else if (collection === 'submitall'){
             submitAllSchools();
