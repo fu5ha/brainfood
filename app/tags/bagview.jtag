@@ -1,0 +1,88 @@
+bagview
+    .wrapper
+        a(href="#close" title="Close" class="close") X
+        .top-bar
+            form(onsubmit="{save}")
+                .field
+                    label Bag Name:
+                    input(type="text" name="bagname" value="{this.bag.name}")
+                button(type="submit") Save
+        .table-wrapper
+            table
+                tr(each="{items}")
+                    td.item
+                        h4 {this.item.name}
+                    td.quantity
+                        form
+                            .field
+                                label Quantity:
+                                input(type="text" name="{this.item._id}" onchange="quantityChanged(this)" value="{this.number}")
+                    td.delete
+                        a(name="{this.item._id}" onclick="removeItemFromBag(this.name)") <i class="fa fa-minus-square-o"></i>
+        .bottom-bar
+            .col-2
+                p Total Cost Per Bag: {this.bag.total_cost}
+
+    script.
+        this.on('mount', function() {
+            this.bag = {
+                name: "Bag A",
+                items: [],
+                total_cost: 0
+            }
+            opts.mounted(this);
+            this.updateCost();
+            this.items = this.bag.items;
+        });
+
+        this.on('item-added', function(newItem) {
+            for (var i=0; i<this.bag.items.length; i++) {
+                if (this.bag.items[i].item._id === newItem._id) {
+                    this.bag.items[i].number += 1;
+                    this.updateCost();
+                    return true;
+                }
+            }
+            this.bag.items.push({
+                item: newItem,
+                number: 1
+            });
+            this.updateCost();
+        });
+
+        this.updateCost = function () {
+            var cost = 0;
+            for (var i=0; i<this.bag.items.length; i++) {
+                cost += this.bag.items[i].item.price * this.bag.items[i].number;
+            }
+            this.bag.total_cost = cost.toFixed(2);
+            this.items = this.bag.items;
+            this.update();
+        }
+
+        this.save = function () {
+            this.bag.name = this.bagname.value;
+            opts.saveBagToDatabase(this.bag);
+        }
+
+        this.on('quantity-changed', function(obj) {
+            for (var i=0; i<this.bag.items.length; i++) {
+                if (this.bag.items[i].item._id === obj.name) {
+                    this.bag.items[i].number = obj.value;
+                    this.updateCost();
+                    return;
+                }
+            }
+        });
+
+        this.on('remove-item', function(itemID) {
+            for (var i=0; i<this.bag.items.length; i++) {
+                if (this.bag.items[i].item._id === itemID) {
+                    this.bag.items.splice(i,1);
+                    this.updateCost();
+                    return;
+                }
+            }
+        });
+
+        

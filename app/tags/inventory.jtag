@@ -1,0 +1,75 @@
+inventory
+    section.inventory-header
+        .col-1
+            input(form="item-selection" type="checkbox" name="sel-all" value="sel-all" onclick="selectAll(this)")/
+        .col-2
+            h2 Item
+        .col-3
+            h2 Stock
+        .col-4
+            button(type="button" name="add-sel" onclick="{addSelectedToBag}") Add Selected to Bag
+                
+    table
+        tr(each="{opts.items}")
+            td.sel-col
+                input(form="item-selection" type="checkbox" id="sel-{this._id}" name="sel-{this._id}" value="sel-{this._id}")
+            td.item-col
+                h3 {this.name}
+            td.stock-col
+                form( name="{this._id}" onsubmit="changeStock(this.name)")
+                    input(type="text" id="{this._id}-stock" value="{this.stock}")
+                    button(type="submit")<i class="fa fa-floppy-o"></i>
+            td.submit-col
+                button(type="button" name="{this._id}" onclick="addItemToBag(this.name)") Add to Bag
+
+    script.
+        this.on('select-all', function (cb) {
+            if (cb.checked) {
+                for (var i=0;i<opts.items.length;i++) {
+                    document.getElementById('sel-'+opts.items[i]._id).checked = true;
+                }
+            } else {
+                for (var i=0;i<opts.items.length;i++) {
+                    document.getElementById('sel-'+opts.items[i]._id).checked = false;
+                }
+            }
+        });
+        this.on('mount', function() {
+            opts.mounted(this);
+        });
+
+        this.addSelectedToBag = function() {
+            for (var i=0;i<opts.items.length;i++) {
+                if (document.getElementById('sel-'+opts.items[i]._id).checked) {
+                    opts.addItemToBag(opts.items[i]._id);
+                }
+            }
+        }
+
+        this.on('delete-selected', function() {
+            for (var i=0;i<opts.items.length;i++) {
+                if (document.getElementById('sel-'+opts.items[i]._id).checked) {
+                    opts.deleteItem(opts.items[i]._id);
+                }
+            }
+        });
+
+        this.on('renewData', function(callback) {
+            opts.renewData(function(data) {
+                opts.items = data;
+                opts.items.sort();
+                callback();
+            });
+        });
+
+        this.on('data_loaded', function(data) {
+            opts.items = data;
+            opts.items.sort();
+            this.update();
+        });
+        this.addItemToBag = function(itemID) {
+            opts.addItemToBag(itemID);
+        }
+        this.on('stock-changed', function() {
+            this.update();
+        });

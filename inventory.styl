@@ -1,0 +1,73 @@
+@import 'jeet'
+@import 'axis'
+
+inventory
+    h2
+        margin 10px
+    i
+        margin: 20px
+    a
+        color: #494949
+        text-decoration: none
+    button
+        button: #67a236, 16, #cbe2b7
+        border-radius: 5px
+        font-family: 'PT Sans'
+        font-weight: normal
+    section.inventory-header
+        color: #292929
+        clearfix()
+        background #aaa
+        text-align: center
+        position: relative
+        .col-1
+            span(1/20)
+            align(vertical)
+        .col-2
+            span(9/20)
+            h2
+                text-align: center
+            margin-left: 5%
+        .col-3
+            span(6/20)
+            h2
+                text-align: center
+        .col-4
+            span(4/20)
+            button
+                button: #dadada, 16, #666
+                border-radius: 5px
+                font-family: 'PT Sans'
+                font-weight: normal
+                display: inline
+                text-align: center
+            align(vertical)
+            margin-left: 80%
+        border-bottom: 3px solid #494949
+        margin-bottom: -2px
+    table
+        width: 100%
+        input[type="checkbox"]
+            display: block
+            margin: auto
+        tr
+            table()
+            td
+                vertical-align: middle
+                text-align: center
+            td.sel-col
+                width: 5%         
+            td.item-col
+                width: 45%
+            td.stock-col
+                text-align: center
+                h3
+                    display: inline
+                button
+                    display: inline
+                width: 30%
+            td.submit-col
+                text-align: center
+                width:20%
+        tr:nth-child(even)
+            background: #eee

@@ -2,15 +2,33 @@ doctype html
 
 html
     head
-        title RiotJS Contact List AJAX
+        title Brainfood Inventory App
 
         link(rel="stylesheet" href="css/main.css")
+        link(href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css')
+        link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
 
     body
-        section
-            contact-list
+        headertop
+        section.inventory
+            inventory
+            order
+
+        bagview#bagView
+        new-item#new-item
+        new-school#new-school
+
+        .main-bottom-bar
+            section.footer
+                a#new-button(href="#new-item")
+                    button(type="button") Add Food Item
+                button.inventory(type="button" onclick="deleteSelected()") Delete Selected Items
+                button.inventory(type="button" onclick="generateShoppingList()") Generate Shopping List
 
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
         script(src="js/riot.min.js")
         script(src="js/all-tags.min.js")
         script(src="js/global.min.js")
+
+        script.
+            riot.mount('headertop')

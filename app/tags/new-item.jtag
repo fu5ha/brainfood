@@ -1,0 +1,44 @@
+new-item
+    .wrapper
+        a(href="#close" title="Close" class="close") X
+        h2 New Item
+        form(id="new-item-form" onsubmit="{this.createItem}")
+            .field
+                label Item #
+                input(type="text" name="number")
+            .field
+                label Item Name
+                input(type="text" name="name")
+            .field
+                label Units Per Pack
+                input(type="text" name="units")
+            .field
+                label Price
+                input(type="text" name="price")
+            .field
+                label Stock
+                input(type="text" name="stock")
+            button(type="submit") Add Item
+
+    script.
+        this.on('mount', function() {
+            document.getElementById("new-item-form").addEventListener("submit", function(event){
+                event.preventDefault()
+            });
+        });
+        this.createItem = function() {
+            var newItem = {
+                "item_number" : parseInt(this.number.value),
+                "name" : this.name.value,
+                "pack" : parseInt(this.units.value),
+                "price" : parseFloat(this.price.value),
+                "stock" : parseInt(this.stock.value)
+            };
+            opts.createNewItem(newItem, function(success) {
+                if(success) {
+                    window.location.hash = "#close";
+                } else {
+                    alert('Something went wrong. Please try again!')
+                }
+            });
+        }

@@ -1,0 +1,33 @@
+new-school
+    .wrapper
+        a(href="#close" title="Close" class="close") X
+        h2 New Item
+        form(id="new-school-form" onsubmit="{this.createSchool}")
+            .field
+                label School Name
+                input(type="text" name="name")
+            .field
+                label Number of Bags
+                input(type="text" name="bags")
+            button(type="submit") Add Item
+
+    script.
+        this.on('mount', function() {
+            document.getElementById("new-school-form").addEventListener("submit", function(event){
+                event.preventDefault()
+            });
+        });
+        this.createSchool = function() {
+            var newSchool = {
+                "name" : this.name.value,
+                "bag" : [],
+                "bags" : parseInt(this.bags.value)
+            };
+            opts.createNewSchool(newSchool, function(success) {
+                if(success) {
+                    window.location.hash = "#close";
+                } else {
+                    alert('Something went wrong. Please try again!')
+                }
+            });
+        }

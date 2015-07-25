@@ -1,0 +1,50 @@
+order
+    section.order-header
+        .col-1
+            h2 School
+        .col-2
+            button(type="button" onclick="assignAll()") Assign All
+            h2 Bag
+        .col-3
+            h2 #
+                
+    table
+        tr(each="{opts.schools}")
+            td.school-col
+                h3 {this.name}
+            td.bags-col
+                select.bag-select(id="sel-{this._id}")
+                    option(each="{lbag in parent.opts.bags}" value="{lbag._id}") {lbag.name}
+            td.num-col
+                input(type="text" name="{this.bag._id}" onchange="bagNumberChanged(this)" value="{this.bags}")
+            td.submit-col
+                button(type="button" name="{this._id}" onclick="schoolSubmitted(this.name)") Submit
+    script.
+        this.on('mount', function() {
+            opts.mounted(this);
+        });
+
+        this.on('school-submitted', function(schoolID) {
+            var e = document.getElementById('sel-'+schoolID);
+            var selected_bag = e.options[e.selectedIndex].value;
+            opts.submitSchool(schoolID, selected_bag);
+        });
+
+        this.on('renewData', function(callback) {
+            opts.renewData(function(data) {
+                opts.schools = data[0];
+                opts.bags = data[1];   
+                callback();
+            });
+        });
+
+        this.on('data_loaded', function(data) {
+            opts.schools = data[0];
+            opts.bags = data[1];
+            console.log(opts.schools);
+            console.log(opts.bags);
+            this.update();
+        });
+        this.addItemToBag = function(itemID) {
+            opts.addItemToBag(itemID);
+        }
