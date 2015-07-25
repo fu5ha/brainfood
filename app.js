@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 //db
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/brainfood');
+var db = monk('mongodb://heroku_cvtlvgnw:2p1pnog60hqbqad4eeqc67jo89@ds063892.mongolab.com:63892/heroku_cvtlvgnw');
 
 var routes = require('./routes/index');
 var api = require('./routes/api');
