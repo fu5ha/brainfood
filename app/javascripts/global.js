@@ -42,9 +42,7 @@ $(document).ready(function() {
 });
 
 function assignAll() {
-    console.log("assign")
     var selected_index = $('.bag-select').first().prop('selectedIndex')
-    console.log(selected_index)
     $('.bag-select').prop('selectedIndex', selected_index);
 }
 
@@ -67,14 +65,16 @@ function removeInventory(schoolID, callback) {
     var school = {}
     $.getJSON('/api/school/'+schoolID, function(data) {
         school = data;
+        console.log(school)
         var num_bags = school.bags;
         var bag = school.bag;
         for (var i=0;i<bag.items.length;i++) {
+            console.log(bag.items[i])
             var item = bag.items[i].item;
             var items_per_bag = bag.items[i].number;
             var total = (items_per_bag * num_bags) * -1;
             $.ajax({
-                url: '/api/item/inc/'+item._id,
+                url: '/api/item/inc/'+ item._id ,
                 type: 'PUT',
                 data: JSON.stringify({"stock" : total}),
                 contentType: 'application/json',
@@ -277,7 +277,7 @@ function selectAll(cb) {
 }
 
 function changeStock(itemID) {
-    var stock_val = document.getElementById(itemID+'-stock').value;
+    var stock_val = parseInt(document.getElementById(itemID+'-stock').value);
     var json = JSON.stringify({ stock: stock_val });
     $.ajax({
         url: 'api/item/' + itemID,

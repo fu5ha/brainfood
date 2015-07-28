@@ -41,8 +41,6 @@ order
         this.on('data_loaded', function(data) {
             opts.schools = data[0];
             opts.bags = data[1];
-            console.log(opts.schools);
-            console.log(opts.bags);
             this.update();
         });
         this.addItemToBag = function(itemID) {

@@ -17,8 +17,7 @@ inventory
                 h3 {this.name}
             td.stock-col
                 form( name="{this._id}" onsubmit="changeStock(this.name)")
-                    input(type="text" id="{this._id}-stock" value="{this.stock}")
-                    button(type="submit")<i class="fa fa-floppy-o"></i>
+                    input(type="text" name="{this._id}" onchange="changeStock(this.name)" id="{this._id}-stock" value="{this.stock}")
             td.submit-col
                 button(type="button" name="{this._id}" onclick="addItemToBag(this.name)") Add to Bag
 

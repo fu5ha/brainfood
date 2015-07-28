@@ -2,7 +2,8 @@ var express = require('express');
 var monk = require('monk');
 var router = express.Router();
 
-var db = monk('mongodb://heroku_cvtlvgnw:2p1pnog60hqbqad4eeqc67jo89@ds063892.mongolab.com:63892/heroku_cvtlvgnw');
+//var db = monk('mongodb://heroku_cvtlvgnw:2p1pnog60hqbqad4eeqc67jo89@ds063892.mongolab.com:63892/heroku_cvtlvgnw');
+var db = monk('localhost/brainfood')
 var items = db.get('items');
 var bags = db.get('bags');
 var schools = db.get('schools');
