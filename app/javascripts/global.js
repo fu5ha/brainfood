@@ -103,14 +103,16 @@ function removeInventory(schoolID, callback) {
                         data: JSON.stringify({"stock" : items_to_subtract[i].total}),
                         contentType: 'application/json',
                         success: function(data){
-                            callback(true)
+                            callback(true);
                         },
                         error: function() {
-                            callback(false)
+                            callback(false);
                         }
                     });
                 }
-            }   
+            } else {
+                callback(false);
+            } 
         })
     });
 }
