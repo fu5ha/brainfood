@@ -31,5 +31,5 @@ new-school
                 } else {
                     alert('Something went wrong. Please try again!')
                 }
-            });
+            }.bind(this));
         }

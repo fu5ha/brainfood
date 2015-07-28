@@ -65,27 +65,53 @@ function removeInventory(schoolID, callback) {
     var school = {}
     $.getJSON('/api/school/'+schoolID, function(data) {
         school = data;
-        console.log(school)
         var num_bags = school.bags;
         var bag = school.bag;
+        var items_to_subtract = [];
+        var can_order = true;
+        var items = [];
+        var promises = [];
         for (var i=0;i<bag.items.length;i++) {
-            console.log(bag.items[i])
-            var item = bag.items[i].item;
-            var items_per_bag = bag.items[i].number;
-            var total = (items_per_bag * num_bags) * -1;
-            $.ajax({
-                url: '/api/item/inc/'+ item._id ,
-                type: 'PUT',
-                data: JSON.stringify({"stock" : total}),
-                contentType: 'application/json',
-                success: function(data){
-                    callback(true)
-                },
-                error: function() {
-                    callback(false)
-                }
+            var promise = $.getJSON('/api/item/' + bag.items[i].item._id, function(data) {
+                items.push(data);
             });
+            promises.push(promise);
         }
+
+        $.when.apply(null, promises).done(function() {
+            for (var i=0;i<items.length;i++) {
+                var item = items[i];
+                var items_per_bag = bag.items[i].number;
+                var order_total = items_per_bag * num_bags;
+                var total = item.stock - order_total;
+                if (total < 0) {
+                    alert('There is insufficient stock of "' + item.name + '" to make the order. ' + Math.abs(total) + ' more are needed.');
+                    can_order = false;
+                } else {
+                    var new_item = {
+                        id: item._id,
+                        total: total
+                    }
+                    items_to_subtract.push(new_item);
+                }
+            }
+            if (can_order) {
+                for (var i=0;i<items_to_subtract.length;i++) {
+                    $.ajax({
+                        url: '/api/item/'+ items_to_subtract[i].id,
+                        type: 'PUT',
+                        data: JSON.stringify({"stock" : items_to_subtract[i].total}),
+                        contentType: 'application/json',
+                        success: function(data){
+                            callback(true)
+                        },
+                        error: function() {
+                            callback(false)
+                        }
+                    });
+                }
+            }   
+        })
     });
 }
 
